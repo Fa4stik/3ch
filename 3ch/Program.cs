@@ -14,8 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
+//builder.Services.AddAuthentication();
+//builder.Services.AddAuthorization();
 builder.Services.AddHealthChecks();
 builder.Services.AddRouting();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -23,12 +23,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 // добавляем контекст ApplicationContext в качестве сервиса в приложение
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Authorization";
-        options.AccessDeniedPath = "/Authorization";
-    });
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie(options =>
+//    {
+//        options.LoginPath = "/Authorization";
+//        options.AccessDeniedPath = "/Authorization";
+//    });
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -45,7 +45,7 @@ app.UseForwardedHeaders();
 app.UseRouting();
 app.UseFileServer();
 app.MapHub<CommentHub>("/CommentHub");
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 app.MapControllers();
 app.Run();

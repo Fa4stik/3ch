@@ -10,13 +10,13 @@ namespace _3ch.Controllers
     public class CommentController : ControllerBase
     {
         [HttpGet(Name = "GetComments")]
-        public async static Task<IEnumerable<Comment>> GetComments(int postId, int start, int end = 0)
+        public async Task<IEnumerable<Comment>> GetComments(int postId, int start = 0, int end = 1)
         {
             return await CommentDataTransfer.GetComments(postId, start, end);
         }
 
         [HttpGet(Name = "GetComment")]
-        public async static Task<Comment> GetComment(int id)
+        public async Task<Comment> GetComment(int id)
         {
             return await CommentDataTransfer.GetComment(id);
         }
