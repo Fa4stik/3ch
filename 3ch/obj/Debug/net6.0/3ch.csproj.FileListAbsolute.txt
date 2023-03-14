@@ -39,3 +39,11 @@ D:\repos\3ch\3ch\obj\Debug\net6.0\refint\3ch.dll
 D:\repos\3ch\3ch\obj\Debug\net6.0\3ch.pdb
 D:\repos\3ch\3ch\obj\Debug\net6.0\3ch.genruntimeconfig.cache
 D:\repos\3ch\3ch\obj\Debug\net6.0\ref\3ch.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Common.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\Microsoft.Extensions.Features.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\System.IO.Pipelines.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\System.Text.Json.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll

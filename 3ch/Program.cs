@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Swagger;
+using _3ch.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddHealthChecks();
 builder.Services.AddRouting();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 // добавляем контекст ApplicationContext в качестве сервиса в приложение
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -42,6 +44,7 @@ app.UseStaticFiles();
 app.UseForwardedHeaders();
 app.UseRouting();
 app.UseFileServer();
+app.MapHub<CommentHub>("/CommentHub");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

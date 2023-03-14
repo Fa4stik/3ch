@@ -7,6 +7,6 @@
         public string content { get; set; }
         public DateTime date { get; set; }
         public int tag { get; set; }
-        public int mediaId { get; set; }
+        public int? mediaId { get; set; }
     }
 }
