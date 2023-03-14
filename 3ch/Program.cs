@@ -18,6 +18,16 @@ builder.Services.AddControllers();
 //builder.Services.AddAuthorization();
 builder.Services.AddHealthChecks();
 builder.Services.AddRouting();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ClientPermission", policy =>
+    {
+        policy.AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithOrigins("http://localhost:3000")
+            .AllowCredentials();
+    });
+});
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
@@ -43,6 +53,7 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseForwardedHeaders();
 app.UseRouting();
+app.UseCors("ClientPermission");
 app.UseFileServer();
 app.MapHub<CommentHub>("/CommentHub");
 //app.UseAuthentication();
