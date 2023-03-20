@@ -15,13 +15,13 @@ namespace _3ch.Services
         {
             if (uploadedFile != null)
             {
-                var extension = uploadedFile.FileName.Split('.')[1];
-                if (extension != "png" && extension != "jpg" && extension != "jepg")
-                {
-                    result.StatusCode = 400;
-                    result.Value = "Неверное расширение файла";
-                    return result;
-                }
+                //var extension = uploadedFile.FileName.Split('.')[1];
+                //if (extension != "png" && extension != "jpg" && extension != "jepg")
+                //{
+                //    result.StatusCode = 400;
+                //    result.Value = "Неверное расширение файла";
+                //    return result;
+                //}
                 string path = "/Files/" + uploadedFile.FileName;
                 using (var fileStream = new FileStream(appEnvironment.ContentRootPath + path, FileMode.Create))
                 {
