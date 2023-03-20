@@ -16,9 +16,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("ClientPermission", policy =>
     {
-        policy.AllowAnyHeader()
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
             .AllowAnyMethod()
-            .WithOrigins("http://localhost:3000")
             .AllowCredentials();
     });
 });
@@ -38,10 +39,10 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    
 }
-
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseCookiePolicy();
 app.UseHttpsRedirection();
 app.UseDefaultFiles();

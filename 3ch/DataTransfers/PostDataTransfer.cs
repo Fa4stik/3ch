@@ -21,7 +21,7 @@ namespace _3ch.DataTransfers
         {
             using (var AppContext = new ApplicationContext())
             {
-                var post = (await AppContext.Post.AddAsync(new Post() { heading = heading, content = content, tag = tagId, date = DateTime.Now, mediaId = mediaId })).Entity;
+                var post = (await AppContext.Post.AddAsync(new Post() { heading = heading, content = content, tag = tagId, date = DateTime.UtcNow, mediaId = mediaId })).Entity;
                 await AppContext.SaveChangesAsync();
                 return post;
             }              
