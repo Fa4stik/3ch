@@ -1,12 +1,6 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using System.Text.Json;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using Swashbuckle.AspNetCore.Swagger;
 using _3ch.Hubs;
+using Microsoft.Extensions.FileProviders;
+using _3ch.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +25,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddFileManager();
 // добавляем контекст ApplicationContext в качестве сервиса в приложение
 
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -50,7 +45,12 @@ if (app.Environment.IsDevelopment())
 app.UseCookiePolicy();
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Files")),
+    RequestPath = "/Files"
+});
 app.UseForwardedHeaders();
 app.UseRouting();
 app.UseCors("ClientPermission");

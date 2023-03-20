@@ -28,7 +28,6 @@ namespace _3ch.Hubs
             if (updatedComment != null)
                 await Clients.Group(postId.ToString()).SendAsync("UpdateComment", updatedComment);
         }
-
         public async Task AddToGroup(string groupName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
