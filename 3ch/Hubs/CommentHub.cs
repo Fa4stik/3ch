@@ -8,10 +8,10 @@ namespace _3ch.Hubs
 {
     public class CommentHub : Hub
     {
-        public async Task SendComment(int postId, string comment, int? mediaid = null)
+        public async Task SendComment(int postId, string comment, int? mediaId = null)
         {
             comment = comment.Replace(@"\n", "\n");
-            var sendedComment = await CommentDataTransfer.SendComment(postId, comment, mediaid);
+            var sendedComment = await CommentDataTransfer.SendComment(postId, comment, mediaId);
             if (sendedComment == null)
                 await Clients.Group(postId.ToString()).SendAsync("RecieveComment", sendedComment);
         }
