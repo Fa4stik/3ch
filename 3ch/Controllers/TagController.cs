@@ -11,11 +11,11 @@ namespace _3ch.Controllers
     public class TagController : Controller
     {
         [HttpGet(Name = "GetTag")]
-        public static async Task<Tag> GetTagById(int idTag) 
+        public static async Task<Tag> GetTagById([FromForm] int idTag) 
             => await TagDataTransfer.GetTagById(idTag);
 
         [HttpGet(Name = "GetTag")]
-        public static async Task<IEnumerable<Tag>> GetTagBetween(int startIndex, int endIndex = 0) 
+        public static async Task<IEnumerable<Tag>> GetTagBetween([FromForm]  int startIndex, [FromForm]  int endIndex = 0) 
             => await TagDataTransfer.GetTagBetween(startIndex, endIndex);
 
         [HttpGet(Name = "GetTag")]
