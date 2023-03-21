@@ -2,7 +2,6 @@ D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\3ch
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\appsettings.Development.json
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\appsettings.json
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\3ch.dll
-D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\3ch.deps.json
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\3ch.runtimeconfig.json
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\3ch.pdb
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\Microsoft.AspNetCore.Connections.Abstractions.dll
@@ -30,3 +29,4 @@ D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\Swashbuckle.AspNetCore.Sw
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\System.IO.Pipelines.dll
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\System.Text.Encodings.Web.dll
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\System.Text.Json.dll
+D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\PubTmp\Out\3ch.deps.json

@@ -44,3 +44,8 @@ D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\refint\3ch.dll
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\3ch.pdb
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\3ch.genruntimeconfig.cache
 D:\repos\3ch\3ch\obj\Debug\net6.0\linux-x64\ref\3ch.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\linux-x64\Humanizer.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\linux-x64\Microsoft.EntityFrameworkCore.Design.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\linux-x64\Microsoft.Extensions.DependencyModel.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\linux-x64\Mono.TextTemplating.dll
+D:\repos\3ch\3ch\bin\Debug\net6.0\linux-x64\System.CodeDom.dll
