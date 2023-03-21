@@ -28,14 +28,15 @@ namespace _3ch.Controllers
         }
 
         [HttpPost(Name = "CreatePost")]
-        async public Task<Post> CreatePost(string? heading, [Required] string content, [Required] int tagId, int? mediaId = null)
+        //
+        async public Task<Post> CreatePost([FromForm]string? heading, [FromForm]string content, [FromForm] int tagId, [FromForm] int? mediaId = null)
         {
             content = content.Replace(@"\n", "\n");
             return await PostDataTransfer.CreatePosts(heading, content.ToString(), tagId, mediaId);
         }
 
         [HttpPut(Name = "UpdatePost")]
-        async public Task<Post> UpdatePost(int postId, string heading, string content, int tagId, int? mediaId = null)
+        async public Task<Post> UpdatePost([FromForm] int postId, [FromForm] string heading, [FromForm] string content, [FromForm] int tagId, [FromForm] int? mediaId = null)
         {
             content = content.Replace(@"\n", "\n");
             return await PostDataTransfer.UpdatePosts(postId, heading, content, tagId, mediaId);
