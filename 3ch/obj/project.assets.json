@@ -1564,7 +1564,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\1\\.nuget\\packages\\": {}
+    "C:\\Users\\stepa\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -1572,11 +1572,11 @@
       "projectUniqueName": "D:\\C# [Porject]\\3ch\\3ch\\3ch.csproj",
       "projectName": "3ch",
       "projectPath": "D:\\C# [Porject]\\3ch\\3ch\\3ch.csproj",
-      "packagesPath": "C:\\Users\\1\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\stepa\\.nuget\\packages\\",
       "outputPath": "D:\\C# [Porject]\\3ch\\3ch\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\stepa\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1644,24 +1644,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.11, 6.0.11]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[6.0.11, 6.0.11]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.11, 6.0.11]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[6.0.11, 6.0.11]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -1670,7 +1652,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   },
@@ -1679,7 +1661,7 @@
       "code": "Undefined",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Ошибка чтения файла кэша D:\\C# [Porject]\\3ch\\3ch\\obj\\project.nuget.cache: Invalid property identifier character: <. Path 'version', line 3, position 0."
+      "message": "Ошибка чтения файла кэша D:\\C# [Porject]\\3ch\\3ch\\obj\\project.nuget.cache: After parsing a value an unexpected character was encountered: =. Path 'expectedPackageFiles[35]', line 43, position 0."
     }
   ]
 }

@@ -11,7 +11,7 @@ namespace _3ch.Services
         }
 
         /// <param name="FileTable">Название таблицы к которой относится изображение(Pictures, Players, Teams)</param>
-        public async Task<CreatedAtActionResult> UploadFile(IFormFile uploadedFile, CreatedAtActionResult result)
+        public async Task<CreatedAtActionResult> UploadFile(IFormFile? uploadedFile, CreatedAtActionResult result)
         {
             if (uploadedFile != null)
             {
