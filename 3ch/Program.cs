@@ -12,17 +12,17 @@ builder.Services.AddControllers();
 //builder.Services.AddAuthorization();
 builder.Services.AddHealthChecks();
 builder.Services.AddRouting();
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("ClientPermission", policy =>
-//    {
-//        policy
-//            .AllowAnyOrigin()
-//            .AllowAnyHeader()
-//            .AllowAnyMethod()
-//            .AllowCredentials();
-//    });
-//});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ClientPermission", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:3000")
+            .AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
@@ -54,7 +54,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 app.UseForwardedHeaders();
 app.UseRouting();
-//app.UseCors("ClientPermission");
+app.UseCors("ClientPermission");
 app.UseFileServer();
 app.MapHub<CommentHub>("/CommentHub");
 //app.UseAuthentication();
