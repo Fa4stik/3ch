@@ -14,7 +14,7 @@ namespace _3ch.DataTransfers
         public static async Task<IEnumerable<Tag>> GetTagBetween(int startIndex, int endIndex=0)
         {
             using (var AppContext = new ApplicationContext())
-                return await AppContext.Tag.Take(new Range(startIndex, endIndex)).ToListAsync();
+                return (await AppContext.Tag.ToListAsync()).Take(new Range(startIndex, endIndex));
         }
 
         public static async Task<int> GetTagCount()
