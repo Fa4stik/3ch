@@ -5,22 +5,22 @@ namespace _3ch.DataTransfers
 {
     public class TagDataTransfer
     {
-        public static async Task<Tag> GetTagById(int idTag)
+        public static async Task<IResult> GetTagById(int idTag)
         {
-            using (var AppContext = new ApplicationContext())
-                return await AppContext.Tag.FirstOrDefaultAsync(t => t.id == idTag);
+            await using var appContext = new ApplicationContext();
+            return Results.Ok(await appContext.Tag.FirstOrDefaultAsync(t => t.id == idTag));
         }
 
-        public static async Task<IEnumerable<Tag>> GetTagBetween(int startIndex, int endIndex=0)
+        public static async Task<IResult> GetTagBetween(int startIndex, int endIndex)
         {
-            using (var AppContext = new ApplicationContext())
-                return (await AppContext.Tag.ToListAsync()).Take(new Range(startIndex, endIndex));
+            await using var appContext = new ApplicationContext();
+            return Results.Ok((await appContext.Tag.ToListAsync()).Take(new Range(startIndex, endIndex)));
         }
 
-        public static async Task<int> GetTagCount()
+        public static async Task<IResult> GetTagCount()
         {
-            using (var AppContext = new ApplicationContext())
-                return AppContext.Tag.Count();
+            await using var appContext = new ApplicationContext();
+            return Results.Ok(appContext.Tag.Count());
         }
     }
 }

@@ -5,57 +5,51 @@ namespace _3ch.DataTransfers
 {
     public class CommentDataTransfer
     {
-        public async static Task<IEnumerable<Comment>> GetComments(int postId, int start, int end = 0)
+        public async static Task<IResult> GetComments(int postId, int start, int end = 0)
         {
-            using (var AppContext = new ApplicationContext())
-                return (await AppContext.Comment.ToListAsync()).Where(x => x.postId == postId).Take(new Range(start, end));
+            await using var AppContext = new ApplicationContext();
+            return Results.Ok((await AppContext.Comment.ToListAsync()).Where(x => x.postId == postId).Take(new Range(start, end)));
         }
 
-        public async static Task<Comment> GetComment(int id)
+        public async static Task<IResult> GetComment(int id)
         {
-            using (var AppContext = new ApplicationContext())
-                return (await AppContext.Comment.FirstOrDefaultAsync(x => x.id == id));
+            await using var appContext = new ApplicationContext();
+            return Results.Ok(await appContext.Comment.FirstOrDefaultAsync(x => x.id == id));
         }
 
-        public async static Task<Comment> SendComment(int postId, string comment, int? mediaid = null)
+        public async static Task<IResult> SendComment(int postId, string comment, int? mediaid = null)
         {
-            using (var AppContext = new ApplicationContext())
+            await using var appContext = new ApplicationContext();
+            var sendedComment = (await appContext.Comment.AddAsync(new Comment() { postId = postId, mediaId = mediaid, comment = comment })).Entity;
+            await appContext.SaveChangesAsync();
+            return Results.Ok(sendedComment);
+        }
+
+        public async static Task<IResult> DeleteComment(int commentId)
+        {
+            await using var appContext = new ApplicationContext();
+            var comment = await appContext.Comment.FirstOrDefaultAsync(x => x.id == commentId);
+            if (comment != null)
             {
-                var sendedComment = (await AppContext.Comment.AddAsync(new Comment() { postId = postId, mediaId = mediaid, comment = comment })).Entity;
-                await AppContext.SaveChangesAsync();
-                return sendedComment;
+                appContext.Comment.Remove(comment);
+                await appContext.SaveChangesAsync();
+                return Results.Ok(comment);
             }
+            
+            return Results.NotFound("Comment does not exist");
         }
 
-        public async static Task<Comment> DeleteComment(int commentId)
+        public async static Task<IResult> UpdateComment(int commentId, string comment, int? mediaid = null)
         {
-            using (var AppContext = new ApplicationContext())
+            await using var appContext = new ApplicationContext();
+            var sendedComment = (await appContext.Comment.FirstOrDefaultAsync(x => x.id == commentId));
+            if (sendedComment != null)
             {
-                var comment = await AppContext.Comment.FirstOrDefaultAsync(x => x.id == commentId);
-                if (comment != null)
-                {
-                    AppContext.Comment.Remove(comment);
-                    await AppContext.SaveChangesAsync();
-                    return comment;
-                }
-                else
-                    return null;
-            }                
-        }
-
-        public async static Task<Comment> UpdateComment(int commentId, string comment, int? mediaid = null)
-        {
-            using (var AppContext = new ApplicationContext())
-            {
-                var sendedComment = (await AppContext.Comment.FirstOrDefaultAsync(x => x.id == commentId));
-                if (sendedComment != null)
-                {
-                    sendedComment.comment = comment;
-                    sendedComment.mediaId = mediaid;
-                }
-                await AppContext.SaveChangesAsync();
-                return sendedComment;
+                sendedComment.comment = comment;
+                sendedComment.mediaId = mediaid;
             }
+            await appContext.SaveChangesAsync();
+            return Results.Ok(sendedComment);
         }
     }
 }

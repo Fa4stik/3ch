@@ -10,20 +10,20 @@ namespace _3ch.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-        private FileManager fileManager { get; }
-        public CommentController(FileManager fileManager)
+        private readonly IFileManager _fileManager;
+        public CommentController(IFileManager fileManager)
         {
-            this.fileManager = fileManager;
+            _fileManager = fileManager;
         }
 
         [HttpGet(Name = "GetComments")]
-        public async Task<IEnumerable<Comment>> GetComments(int postId, int start = 0, int end = 1)
+        public async Task<IResult> GetComments(int postId, int start = 0, int end = 1)
         {
             return await CommentDataTransfer.GetComments(postId, start, end);
         }
 
         [HttpGet(Name = "GetComment")]
-        public async Task<Comment> GetComment(int id)
+        public async Task<IResult> GetComment(int id)
         {
             return await CommentDataTransfer.GetComment(id);
         }

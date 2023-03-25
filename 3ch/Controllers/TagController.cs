@@ -11,19 +11,26 @@ namespace _3ch.Controllers
     [ApiController]
     public class TagController : Controller
     {
+        private readonly int _countTag;
+        public TagController()
+        {
+            using var appContext = new ApplicationContext();
+            _countTag = appContext.Tag.Count();
+        }
+
         [HttpGet(Name = "GetTagById")]
-        public async Task<Tag> GetTagById(int idTag) 
+        public async Task<IResult> GetTagById(int idTag) 
             => await TagDataTransfer.GetTagById(idTag);
 
         [HttpGet(Name = "GetTagBetween")]
-        public async Task<IEnumerable<Tag>> GetTagBetween(int startIndex = 0, int endIndex = 3)
+        public async Task<IResult> GetTagBetween(int startIndex = 0, int? endIndex = null)
         {
-            var list = (await TagDataTransfer.GetTagBetween(startIndex, endIndex)).ToList();
-            return list;
+            int endId = endIndex ?? _countTag;
+            return (await TagDataTransfer.GetTagBetween(startIndex, endId));
         }
 
         [HttpGet(Name = "GetTagCount")]
-        public async Task<int> GetTagCount() 
+        public async Task<IResult> GetTagCount() 
             => await TagDataTransfer.GetTagCount();
     }
 }

@@ -5,43 +5,39 @@ namespace _3ch.DataTransfers
 {
     public class PostDataTransfer
     {
-        public async static Task<IEnumerable<Post>> GetPosts(int start, int end = 0)
+        public async static Task<IResult> GetPosts(int start, int end = 0)
         {
-            using (var AppContext = new ApplicationContext())
-                return (await AppContext.Post.ToListAsync()).Take(new Range(start, end));
+            await using var appContext = new ApplicationContext();
+            return Results.Ok((await appContext.Post.ToListAsync()).Take(new Range(start, end)));
         }
 
-        public async static Task<Post> GetPost(int id)
+        public async static Task<IResult> GetPost(int id)
         {
-            using (var AppContext = new ApplicationContext())
-                return await AppContext.Post.FirstOrDefaultAsync(x => x.id == id);
+            await using var AppContext = new ApplicationContext();
+            return Results.Ok(await AppContext.Post.FirstOrDefaultAsync(x => x.id == id));
         }
 
-        public async static Task<Post> CreatePosts(string heading, string content, int tagId, int? mediaId = null)
+        public async static Task<IResult> CreatePosts(string heading, string content, int idTag, int? idMedia = null)
         {
-            using (var AppContext = new ApplicationContext())
+            await using var appContext = new ApplicationContext();
+            var post = (await appContext.Post.AddAsync(new Post() { heading = heading, content = content, tag = idTag, date = DateTime.UtcNow, mediaId = idMedia })).Entity;
+            await appContext.SaveChangesAsync();
+            return Results.Ok(post);
+        }
+
+        public async static Task<IResult> UpdatePosts(int idPost, string heading, string content, int idTag, int? idMedia = null)
+        {
+            await using var appContext = new ApplicationContext();
+            var post = await appContext.Post.FirstOrDefaultAsync(x => x.id == idPost);
+            if (post != null)
             {
-                var post = (await AppContext.Post.AddAsync(new Post() { heading = heading, content = content, tag = tagId, date = DateTime.UtcNow, mediaId = mediaId })).Entity;
-                await AppContext.SaveChangesAsync();
-                return post;
-            }              
-        }
-
-        public async static Task<Post> UpdatePosts(int postId, string heading, string content, int tagId, int? mediaId = null)
-        {
-            using (var AppContext = new ApplicationContext())
-            {
-                var post = await AppContext.Post.FirstOrDefaultAsync(x => x.id == postId);
-                if (post != null)
-                {
-                    post.heading = heading;
-                    post.content = content;
-                    post.tag = tagId;
-                    post.mediaId = mediaId;
-                }
-                await AppContext.SaveChangesAsync();
-                return post;
+                post.heading = heading;
+                post.content = content;
+                post.tag = idTag;
+                post.mediaId = idMedia;
             }
+            await appContext.SaveChangesAsync();
+            return Results.Ok(post);
         }
     }
 }

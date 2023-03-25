@@ -23,10 +23,12 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
-builder.Services.AddFileManager();
+// Relation services
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<IFileManager, FileManager>();
+
 // добавляем контекст ApplicationContext в качестве сервиса в приложение
 
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
