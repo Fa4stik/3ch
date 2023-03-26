@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 // Relation services
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddTransient<IFileManager, FileManager>();
+builder.Services.AddAllServices();
 
 // добавляем контекст ApplicationContext в качестве сервиса в приложение
 
