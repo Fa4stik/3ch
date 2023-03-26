@@ -25,13 +25,13 @@ namespace _3ch.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int start = 0, int end = 1)
         {
-            return new CreatedAtActionResult("GetPosts", "Post", null, await unitOfWork.PostRepository.GetList(start, end));
+            return Ok(await unitOfWork.PostRepository.GetList(start, end));
         }
 
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
-            return new CreatedAtActionResult("GetPosts", "Post", null, unitOfWork.PostRepository.Get(id));
+            return Ok(unitOfWork.PostRepository.Get(id));
         }
 
         [HttpPost]
@@ -48,7 +48,7 @@ namespace _3ch.Controllers
             };
             unitOfWork.PostRepository.Create(post);
             unitOfWork.Save();
-            return new CreatedAtActionResult("GetPosts", "Post", null, "post created");
+            return Ok("post created");
         }
 
         [HttpPut]
@@ -66,7 +66,7 @@ namespace _3ch.Controllers
             };
             unitOfWork.PostRepository.Update(post);
             unitOfWork.Save();
-            return new CreatedAtActionResult("GetPosts", "Post", null, "post updated");
+            return Ok("post updated");
         }
     }
 }

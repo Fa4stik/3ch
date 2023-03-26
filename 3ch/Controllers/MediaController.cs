@@ -23,7 +23,7 @@ namespace _3ch.Controllers
             => await _fileManager.GetFile(fileId);
 
         [HttpPost(Name = "UploadFile")]
-        public async Task<IResult> UploadFile([FromForm] IFormFile file) 
+        public async Task<IResult> UploadFile(IFormFile file) 
             => await _fileManager.UploadFile(file);
         
 
