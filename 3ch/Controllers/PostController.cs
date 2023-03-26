@@ -23,13 +23,13 @@ namespace _3ch.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPosts(int start = 0, int end = 1)
+        public async Task<IActionResult> Get(int start = 0, int end = 1)
         {
             return new CreatedAtActionResult("GetPosts", "Post", null, await unitOfWork.PostRepository.GetList(start, end));
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetPost(int id)
+        public IActionResult Get(int id)
         {
             return new CreatedAtActionResult("GetPosts", "Post", null, unitOfWork.PostRepository.Get(id));
         }
