@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace _3ch.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CommentController : ControllerBase
     {
@@ -16,13 +16,13 @@ namespace _3ch.Controllers
             _fileManager = fileManager;
         }
 
-        [HttpGet(Name = "GetComments")]
+        [HttpGet]
         public async Task<IResult> GetComments(int postId, int start = 0, int end = 1)
         {
             return await CommentDataTransfer.GetComments(postId, start, end);
         }
 
-        [HttpGet(Name = "GetComment")]
+        [HttpGet("{id:int}")]
         public async Task<IResult> GetComment(int id)
         {
             return await CommentDataTransfer.GetComment(id);

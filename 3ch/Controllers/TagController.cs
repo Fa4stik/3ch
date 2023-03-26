@@ -19,8 +19,8 @@ namespace _3ch.Controllers
         }
 
         [HttpGet(Name = "GetTagById")]
-        public async Task<IResult> GetTagById(int idTag) 
-            => await TagDataTransfer.GetTagById(idTag);
+        public async Task<IResult> GetTagById(int tagId) 
+            => await TagDataTransfer.GetTagById(tagId);
 
         [HttpGet(Name = "GetTagBetween")]
         public async Task<IResult> GetTagBetween(int startIndex = 0, int? endIndex = null)

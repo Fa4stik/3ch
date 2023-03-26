@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using _3ch.DAL;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace _3ch.Services
 {
@@ -7,6 +8,7 @@ namespace _3ch.Services
         public static void AddAllServices(this IServiceCollection services)
         {
             services.AddTransient<IFileManager, FileManager>();
+            services.AddTransient<UnitOfWork>();
         }
     }
 }

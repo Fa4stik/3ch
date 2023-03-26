@@ -19,8 +19,8 @@ namespace _3ch.Controllers
             => await _fileManager.GetFile(filePath);
 
         [HttpGet(Name = "GetFileById")]
-        public async Task<IResult> GetFileById(int idFile)
-            => await _fileManager.GetFile(idFile);
+        public async Task<IResult> GetFileById(int fileId)
+            => await _fileManager.GetFile(fileId);
 
         [HttpPost(Name = "UploadFile")]
         public async Task<IResult> UploadFile([FromForm] IFormFile file) 

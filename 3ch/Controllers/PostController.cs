@@ -1,4 +1,5 @@
-﻿using _3ch.DataTransfers;
+﻿using _3ch.DAL;
+using _3ch.DataTransfers;
 using _3ch.Model;
 using _3ch.Services;
 using Microsoft.AspNetCore.Components.Forms;
@@ -11,35 +12,61 @@ using System.Text;
 
 namespace _3ch.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PostController : ControllerBase
     {
-        [HttpGet(Name = "GetPosts")]
-        async public Task<IResult> GetPosts(int start = 0, int end = 1)
+        private UnitOfWork unitOfWork;
+        public PostController(UnitOfWork unitOfWork)
         {
-            return await PostDataTransfer.GetPosts(start, end);
+            this.unitOfWork = unitOfWork;
         }
 
-        [HttpGet(Name = "GetPost")]
-        async public Task<IResult> GetPost(int id)
+        [HttpGet]
+        public async Task<IActionResult> GetPosts(int start = 0, int end = 1)
         {
-            return await PostDataTransfer.GetPost(id);
+            return new CreatedAtActionResult("GetPosts", "Post", null, await unitOfWork.PostRepository.GetList(start, end));
         }
 
-        [HttpPost(Name = "CreatePost")]
-        //
-        async public Task<IResult> CreatePost([FromForm]string? heading, [FromForm]string content, [FromForm] int idTag, [FromForm] int? mediaId = null)
+        [HttpGet("{id:int}")]
+        public IActionResult GetPost(int id)
+        {
+            return new CreatedAtActionResult("GetPosts", "Post", null, unitOfWork.PostRepository.Get(id));
+        }
+
+        [HttpPost]
+        public IActionResult CreatePost([FromForm]string? heading, [FromForm]string content, [FromForm] int tagId, [FromForm] int? mediaId = null)
         {
             content = content.Replace(@"\n", "\n");
-            return await PostDataTransfer.CreatePosts(heading, content.ToString(), idTag, mediaId);
+            Post post = new Post()
+            {
+                heading = heading,
+                content = content,
+                tag = tagId,
+                mediaId = mediaId,
+                date = DateTime.UtcNow,
+            };
+            unitOfWork.PostRepository.Create(post);
+            unitOfWork.Save();
+            return new CreatedAtActionResult("GetPosts", "Post", null, "post created");
         }
 
-        [HttpPut(Name = "UpdatePost")]
-        async public Task<IResult> UpdatePost([FromForm] int idPost, [FromForm] string heading, [FromForm] string content, [FromForm] int idTag, [FromForm] int? idMedia = null)
+        [HttpPut]
+        public IActionResult UpdatePost([FromForm] int postId, [FromForm] string heading, [FromForm] string content, [FromForm] int tagId, [FromForm] int? mediaId = null)
         {
             content = content.Replace(@"\n", "\n");
-            return await PostDataTransfer.UpdatePosts(idPost, heading, content, idTag, idMedia);
+            Post post = new Post()
+            {
+                id = postId,
+                heading = heading,
+                content = content,
+                tag = tagId,
+                mediaId = mediaId,
+                date = DateTime.UtcNow,
+            };
+            unitOfWork.PostRepository.Update(post);
+            unitOfWork.Save();
+            return new CreatedAtActionResult("GetPosts", "Post", null, "post updated");
         }
     }
 }

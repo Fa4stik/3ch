@@ -10,7 +10,7 @@ namespace _3ch.Services
         public Task<IResult> UploadFile(IFormFile? uploadedFile);
         public Task<IResult> DeleteFile(string filePath);
         public Task<IResult> GetFile(string filePath);
-        public Task<IResult> GetFile(int idFile);
+        public Task<IResult> GetFile(int fileId);
     }
 
     public class FileManager : IFileManager
@@ -84,11 +84,11 @@ namespace _3ch.Services
             }
         }
 
-        public async Task<IResult> GetFile(int idFile)
+        public async Task<IResult> GetFile(int fileId)
         {
             using (var AppContext = new ApplicationContext())
             {
-                var file = await AppContext.Media.FirstOrDefaultAsync(m => m.id == idFile);
+                var file = await AppContext.Media.FirstOrDefaultAsync(m => m.id == fileId);
                 return Results.Ok(file);
             }
         }

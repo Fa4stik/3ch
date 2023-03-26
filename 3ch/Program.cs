@@ -1,6 +1,10 @@
 using _3ch.Hubs;
 using Microsoft.Extensions.FileProviders;
 using _3ch.Services;
+using _3ch.Model;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using _3ch.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +34,10 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddAllServices();
 
 // добавляем контекст ApplicationContext в качестве сервиса в приложение
+//string connection = builder.Configuration.GetConnectionString("connection");
+//builder.Services.AddDbContext<ApplicationContext>(options =>
+//    options.UseNpgsql(connection));
+
 
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 //    .AddCookie(options =>
