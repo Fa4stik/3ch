@@ -16,22 +16,22 @@ namespace _3ch.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private UnitOfWork unitOfWork;
+        private readonly UnitOfWork _unitOfWork;
         public PostController(UnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get(int start = 0, int end = 1)
         {
-            return Ok(await unitOfWork.PostRepository.GetList(start, end));
+            return Ok(await _unitOfWork.PostRepository.GetList(start, end));
         }
 
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
-            return Ok(unitOfWork.PostRepository.Get(id));
+            return Ok(_unitOfWork.PostRepository.Get(id));
         }
 
         [HttpPost]
@@ -46,8 +46,8 @@ namespace _3ch.Controllers
                 mediaId = mediaId,
                 date = DateTime.UtcNow,
             };
-            unitOfWork.PostRepository.Create(post);
-            unitOfWork.Save();
+            _unitOfWork.PostRepository.Create(post);
+            _unitOfWork.Save();
             return Ok("post created");
         }
 
@@ -64,8 +64,8 @@ namespace _3ch.Controllers
                 mediaId = mediaId,
                 date = DateTime.UtcNow,
             };
-            unitOfWork.PostRepository.Update(post);
-            unitOfWork.Save();
+            _unitOfWork.PostRepository.Update(post);
+            _unitOfWork.Save();
             return Ok("post updated");
         }
     }

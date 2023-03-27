@@ -4,33 +4,35 @@ using _3ch.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.WebSockets;
+using _3ch.DAL;
 
 namespace _3ch.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TagController : Controller
     {
         private readonly int _countTag;
-        public TagController()
+        private readonly UnitOfWork _unitOfWork;
+        public TagController(UnitOfWork unitOfWork)
         {
-            using var appContext = new ApplicationContext();
-            _countTag = appContext.Tag.Count();
+            _unitOfWork = unitOfWork;
+            _countTag = _unitOfWork.TagRepository.Count();
         }
 
-        [HttpGet(Name = "GetTagById")]
-        public async Task<IResult> GetTagById(int tagId) 
-            => await TagDataTransfer.GetTagById(tagId);
+        [HttpGet]
+        public async Task<IActionResult> GetTagCount()
+            => Ok(_countTag);
 
-        [HttpGet(Name = "GetTagBetween")]
-        public async Task<IResult> GetTagBetween(int startIndex = 0, int? endIndex = null)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetTag(int id) 
+            => Ok(await TagDataTransfer.GetTag(id));
+
+        [HttpGet("{startIndex:int}/{endIndex:int}")]
+        public async Task<IActionResult> GetTag(int startIndex = 0, int? endIndex = null)
         {
             int endId = endIndex ?? _countTag;
-            return (await TagDataTransfer.GetTagBetween(startIndex, endId));
+            return Ok(await TagDataTransfer.GetTag(startIndex, endId));
         }
-
-        [HttpGet(Name = "GetTagCount")]
-        public async Task<IResult> GetTagCount() 
-            => await TagDataTransfer.GetTagCount();
     }
 }

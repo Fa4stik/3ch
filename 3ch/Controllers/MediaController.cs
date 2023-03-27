@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace _3ch.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class MediaController : Controller
     {
         private readonly IFileManager _fileManager;
@@ -14,22 +14,54 @@ namespace _3ch.Controllers
             _fileManager = fileManager;
         }
 
-        [HttpGet(Name = "GetFileByPath")]
-        public async Task<IResult> GetFileByPath(string filePath) 
-            => await _fileManager.GetFile(filePath);
+        [HttpGet("{filePath}")]
+        public async Task<IActionResult> GetFile(string filePath)
+        {
+            var result = await _fileManager.GetFile(filePath);
+            return result == null ? NotFound() : Ok(result);
+        }
 
-        [HttpGet(Name = "GetFileById")]
-        public async Task<IResult> GetFileById(int fileId)
-            => await _fileManager.GetFile(fileId);
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetFile(int id)
+        {
+            var result = await _fileManager.GetFile(id);
+            return result == null ? NotFound(result) : Ok(result);
+        }
 
-        [HttpPost(Name = "UploadFile")]
-        public async Task<IResult> UploadFile([FromForm] IFormFile file) 
-            => await _fileManager.UploadFile(file);
-        
+        [HttpPost("{file:file}")]
+        public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
+        {
+            var result = await _fileManager.UploadFile(file);
+            return result == null ? NotFound(result) : Ok(result);
+        }
 
-        [HttpDelete(Name = "DeleteFile")]
-        public async Task<IResult> DeleteFile([FromForm] string filePath) 
-            => await _fileManager.DeleteFile(filePath);
+        [HttpDelete("{filePath}")]
+        public async Task<IActionResult> DeleteFile([FromForm] string filePath)
+        {
+            try
+            {
+                var result = await _fileManager.DeleteFile(filePath);
+                return result == null ? NotFound(result) : Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteFile([FromForm] int id)
+        {
+            try
+            {
+                var result = await _fileManager.DeleteFile(id);
+                return result == null ? NotFound(result) : Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
     }
 }

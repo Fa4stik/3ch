@@ -1,4 +1,5 @@
-﻿using _3ch.Model;
+﻿using _3ch.DAL;
+using _3ch.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -7,22 +8,25 @@ namespace _3ch.Services
 {
     public interface IFileManager
     {
-        public Task<IResult> UploadFile(IFormFile? uploadedFile);
-        public Task<IResult> DeleteFile(string filePath);
-        public Task<IResult> GetFile(string filePath);
-        public Task<IResult> GetFile(int fileId);
+        public Task<Media> UploadFile(IFormFile? uploadedFile);
+        public Task<Media?> DeleteFile(string filePath);
+        public Task<Media?> DeleteFile(int id);
+        public Task<Media?> GetFile(string filePath);
+        public Task<Media?> GetFile(int fileId);
     }
 
     public class FileManager : IFileManager
     {
+        private readonly UnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _appEnvironment;
-        public FileManager(IWebHostEnvironment appEnvironment)
+        public FileManager(IWebHostEnvironment appEnvironment, UnitOfWork unitOfWork)
         {
             _appEnvironment = appEnvironment;
+            _unitOfWork = unitOfWork;
         }
 
         /// <param name="FileTable">Название таблицы к которой относится изображение(Pictures, Players, Teams)</param>
-        public async Task<IResult> UploadFile(IFormFile? uploadedFile)
+        public async Task<Media?> UploadFile(IFormFile? uploadedFile)
         {
             if (uploadedFile != null)
             {
@@ -40,57 +44,53 @@ namespace _3ch.Services
                     fileStream.Flush();
                 }
 
-                using (var AppContext = new ApplicationContext())
-                {
-                    var media = (await AppContext.Media.AddAsync(new Media() {src = path})).Entity;
-                    await AppContext.SaveChangesAsync();
-                    return Results.Ok(media);
-                }
+                var media = _unitOfWork.MediaRepository.Create(new Media() { src = path });
+                _unitOfWork.Save();
+                return media;
             }
 
-            return Results.NotFound("You download empty file");
+            return null;
         }
 
-        public async Task<IResult> DeleteFile(string filePath)
+        public async Task<Media?> DeleteFile(string filePath)
         {
             var fullFilePath = _appEnvironment.ContentRootPath + filePath;
             if (File.Exists(fullFilePath))
             {
-                try
-                {
-                    File.Delete(fullFilePath);
-                    using (var AppContext = new ApplicationContext())
-                    {
-                        var deleteFile = await AppContext.Media.FirstOrDefaultAsync(m => m.src == filePath);
-                        AppContext.Remove(deleteFile);
-                        await AppContext.SaveChangesAsync();
-                        return Results.Ok(deleteFile);
-                    }
-                }
-                catch (Exception e)
-                {
-                    return Results.BadRequest($"The deletion failed: {e.Message}");
-                }
+                File.Delete(fullFilePath);
+                var deleteFile = (await _unitOfWork.MediaRepository.GetList()).FirstOrDefault(m => m.src == filePath); 
+                _unitOfWork.MediaRepository.Delete(deleteFile.id); 
+                _unitOfWork.Save();
+                return deleteFile;
             }
-            return Results.NotFound("Specified file doesn't exist");
+            return null;
         }
 
-        public async Task<IResult> GetFile(string filePath)
+        public async Task<Media?> DeleteFile(int id)
         {
-            using (var AppContext = new ApplicationContext())
+            var filePath = (await GetFile(id)).src;
+            var fullFilePath = _appEnvironment.ContentRootPath + filePath;
+            if (File.Exists(fullFilePath))
             {
-                var file = await AppContext.Media.FirstOrDefaultAsync(m => m.src == filePath);
-                return Results.Ok(file);
+                File.Delete(fullFilePath);
+                var deleteFile = (await _unitOfWork.MediaRepository.GetList()).FirstOrDefault(m => m.src == filePath);
+                _unitOfWork.MediaRepository.Delete(deleteFile.id);
+                _unitOfWork.Save();
+                return deleteFile;
             }
+            return null;
         }
 
-        public async Task<IResult> GetFile(int fileId)
+        public async Task<Media?> GetFile(string filePath)
         {
-            using (var AppContext = new ApplicationContext())
-            {
-                var file = await AppContext.Media.FirstOrDefaultAsync(m => m.id == fileId);
-                return Results.Ok(file);
-            }
+            var file = (await _unitOfWork.MediaRepository.GetList()).FirstOrDefault(m => m.src == filePath);
+            return file;
+        }
+
+        public async Task<Media?> GetFile(int id)
+        {
+            var file = _unitOfWork.MediaRepository.Get(id);
+            return file;
         }
     }
 }
