@@ -26,13 +26,13 @@ namespace _3ch.Controllers
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetTag(int id) 
-            => Ok(await TagDataTransfer.GetTag(id));
+            => Ok(_unitOfWork.TagRepository.Get(id));
 
-        [HttpGet("{startIndex:int}/{endIndex:int}")]
+        [HttpGet]
         public async Task<IActionResult> GetTag(int startIndex = 0, int? endIndex = null)
         {
             int endId = endIndex ?? _countTag;
-            return Ok(await TagDataTransfer.GetTag(startIndex, endId));
+            return Ok(_unitOfWork.TagRepository.GetList(startIndex, endId));
         }
     }
 }

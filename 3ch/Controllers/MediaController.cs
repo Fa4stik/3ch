@@ -28,7 +28,7 @@ namespace _3ch.Controllers
             return result == null ? NotFound(result) : Ok(result);
         }
 
-        [HttpPost("{file:file}")]
+        [HttpPost]
         public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
         {
             var result = await _fileManager.UploadFile(file);

@@ -17,8 +17,10 @@ namespace _3ch.Controllers
     public class PostController : ControllerBase
     {
         private readonly UnitOfWork _unitOfWork;
-        public PostController(UnitOfWork unitOfWork)
+        private readonly IFileManager _fileManager;
+        public PostController(IFileManager fileManager, UnitOfWork unitOfWork)
         {
+            _fileManager = fileManager;
             _unitOfWork = unitOfWork;
         }
 
@@ -34,8 +36,11 @@ namespace _3ch.Controllers
             return Ok(_unitOfWork.PostRepository.Get(id));
         }
 
-        [HttpPost]
-        public IActionResult CreatePost([FromForm]string? heading, [FromForm]string content, [FromForm] int tagId, [FromForm] int? mediaId = null)
+        [HttpPost("{heading}/{content}/{tagId:int}/{mediaId:int}")]
+        public async Task<IActionResult> CreatePost([FromForm]string? heading, 
+            [FromForm]string content, 
+            [FromForm] int tagId, 
+            [FromForm] int? mediaId = null)
         {
             content = content.Replace(@"\n", "\n");
             Post post = new Post()
@@ -48,7 +53,28 @@ namespace _3ch.Controllers
             };
             _unitOfWork.PostRepository.Create(post);
             _unitOfWork.Save();
-            return Ok("post created");
+            return Ok(post);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePost([FromForm] string? heading,
+            [FromForm] string content,
+            [FromForm] int tagId,
+            [FromForm] IFormFile? file = null)
+        {
+            content = content.Replace(@"\n", "\n");
+            var mediaResult = await _fileManager.UploadFile(file);
+            Post post = new Post()
+            {
+                heading = heading,
+                content = content,
+                tag = tagId,
+                mediaId = mediaResult.id,
+                date = DateTime.UtcNow,
+            };
+            _unitOfWork.PostRepository.Create(post);
+            _unitOfWork.Save();
+            return Ok(post);
         }
 
         [HttpPut]
@@ -66,7 +92,7 @@ namespace _3ch.Controllers
             };
             _unitOfWork.PostRepository.Update(post);
             _unitOfWork.Save();
-            return Ok("post updated");
+            return Ok(post);
         }
     }
 }
