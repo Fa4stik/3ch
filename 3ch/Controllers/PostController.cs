@@ -1,14 +1,7 @@
 ﻿using _3ch.DAL;
-using _3ch.DataTransfers;
 using _3ch.Model;
 using _3ch.Services;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
-using System.ComponentModel.DataAnnotations;
-using System.Numerics;
-using System.Text;
 
 namespace _3ch.Controllers
 {
@@ -25,9 +18,9 @@ namespace _3ch.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int start = 0, int end = 1)
+        public async Task<IActionResult> Get([FromQuery]string shortTagName, [FromQuery]int start = 0, [FromQuery]int end = 1)
         {
-            return Ok(await _unitOfWork.PostRepository.GetList(start, end));
+            return Ok(await _unitOfWork.PostRepository.GetPostsByTag(shortTagName, start, end));
         }
 
         [HttpGet("{id:int}")]
@@ -37,9 +30,9 @@ namespace _3ch.Controllers
         }
 
         [HttpPost("{heading}/{content}/{tagId:int}/{mediaId:int}")]
-        public async Task<IActionResult> CreatePost([FromForm]string? heading, 
-            [FromForm]string content, 
-            [FromForm] int tagId, 
+        public async Task<IActionResult> CreatePost([FromForm] string? heading,
+            [FromForm] string content,
+            [FromForm] int tagId,
             [FromForm] int? mediaId = null)
         {
             content = content.Replace(@"\n", "\n");

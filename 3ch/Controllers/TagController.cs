@@ -12,27 +12,28 @@ namespace _3ch.Controllers
     [ApiController]
     public class TagController : Controller
     {
-        private readonly int _countTag;
+        //private readonly int _countTag;
         private readonly UnitOfWork _unitOfWork;
         public TagController(UnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _countTag = _unitOfWork.TagRepository.Count();
+            //_countTag = _unitOfWork.TagRepository.Count();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetTagCount()
-            => Ok(_countTag);
+        //[HttpGet]
+        //public async Task<IActionResult> GetTagCount()
+        //    => Ok(_countTag);
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetTag(int id) 
             => Ok(_unitOfWork.TagRepository.Get(id));
 
         [HttpGet]
-        public async Task<IActionResult> GetTag(int startIndex = 0, int? endIndex = null)
+        public async Task<IActionResult> GetTag(int startIndex = 0, int endIndex = 1)
         {
-            int endId = endIndex ?? _countTag;
-            return Ok(_unitOfWork.TagRepository.GetList(startIndex, endId));
+            //int endId = endIndex ?? _countTag;
+            //из-за проблема с count в этом классе не запускался сваггер. я закоментил что-бы потом было видно что не работало.
+            return Ok(_unitOfWork.TagRepository.GetList(startIndex, endIndex));
         }
     }
 }
