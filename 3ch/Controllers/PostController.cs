@@ -29,7 +29,7 @@ namespace _3ch.Controllers
             return Ok(_unitOfWork.PostRepository.Get(id));
         }
 
-        [HttpPost("{heading}/{content}/{tagId:int}/{mediaId:int}")]
+        [HttpPost("{CreatePost}")]
         public async Task<IActionResult> CreatePost([FromForm] string? heading,
             [FromForm] string content,
             [FromForm] int tagId,
@@ -55,16 +55,29 @@ namespace _3ch.Controllers
             [FromForm] int tagId,
             [FromForm] IFormFile? file = null)
         {
+            Post post = null;
+            Media mediaResult = null;
             content = content.Replace(@"\n", "\n");
-            var mediaResult = await _fileManager.UploadFile(file);
-            Post post = new Post()
-            {
-                heading = heading,
-                content = content,
-                tag = tagId,
-                mediaId = mediaResult.id,
-                date = DateTime.UtcNow,
-            };
+            if (file != null)
+                mediaResult = await _fileManager.UploadFile(file);
+            if (file != null)
+                post = new Post()
+                {
+                    heading = heading,
+                    content = content,
+                    tag = tagId,
+                    mediaId = mediaResult.id,
+                    date = DateTime.UtcNow,
+                };
+            else
+                post = new Post()
+                {
+                    heading = heading,
+                    content = content,
+                    tag = tagId,
+                    mediaId = null,
+                    date = DateTime.UtcNow,
+                };
             _unitOfWork.PostRepository.Create(post);
             _unitOfWork.Save();
             return Ok(post);

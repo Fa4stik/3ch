@@ -29,11 +29,11 @@ namespace _3ch.Controllers
             => Ok(_unitOfWork.TagRepository.Get(id));
 
         [HttpGet]
-        public async Task<IActionResult> GetTag(int startIndex = 0, int endIndex = 1)
+        public async Task<IEnumerable<Tag>> GetTag(int startIndex = 0, int endIndex = 1)
         {
             //int endId = endIndex ?? _countTag;
             //из-за проблема с count в этом классе не запускался сваггер. я закоментил что-бы потом было видно что не работало.
-            return Ok(_unitOfWork.TagRepository.GetList(startIndex, endIndex));
+            return await _unitOfWork.TagRepository.GetList(startIndex, endIndex);
         }
     }
 }
