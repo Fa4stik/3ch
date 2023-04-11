@@ -28,6 +28,15 @@ namespace _3ch.Controllers
         public async Task<IActionResult> GetTag(int id) 
             => Ok(_unitOfWork.TagRepository.Get(id));
 
+        [HttpGet("{shortName}")]
+        public async Task<IActionResult> GetTag(string shortName)
+        {
+            shortName = shortName.Replace("%2F","/");
+            var context = new ApplicationContext();
+            var tag = context.Tag.FirstOrDefault(x => x.shortName == shortName);
+            return Ok(tag);
+        }
+
         [HttpGet]
         public async Task<IEnumerable<Tag>> GetTag(int startIndex = 0, int endIndex = 1)
         {
