@@ -1,4 +1,4 @@
-﻿namespace _3ch.Model
+﻿namespace _3ch.Model.Responses
 {
     public class CommentInfo
     {

@@ -1,5 +1,6 @@
 ﻿using _3ch.DAL;
 using _3ch.Model;
+using _3ch.Model.Responses;
 using _3ch.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,19 @@ namespace _3ch.Controllers
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
-            return Ok(_unitOfWork.PostRepository.Get(id));
+            var x = _unitOfWork.PostRepository.Get(id);
+            return Ok(new PostResponse()
+            {
+                id = x.id,
+                content = x.content,
+                date = x.date,
+                heading = x.heading,
+                mediaId = x.mediaId,
+                tag = x.tag,
+                mediaSrc = x.mediaId.HasValue ? _unitOfWork.MediaRepository.Get(x.mediaId.Value).src : null,
+                tagName = _unitOfWork.TagRepository.Get(x.tag).name,
+                tagShortName = _unitOfWork.TagRepository.Get(x.tag).shortName
+            });
         }
 
         [HttpPost("{CreatePost}")]

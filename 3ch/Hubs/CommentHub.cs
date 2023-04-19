@@ -1,5 +1,6 @@
 ﻿using _3ch.DataTransfers;
 using _3ch.Model;
+using _3ch.Model.Responses;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.Design;
