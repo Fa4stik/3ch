@@ -24,7 +24,17 @@ namespace _3ch.Controllers
         {
             var result = (await _unitOfWork.CommentRepository.GetList())
                 .Where(c => c.postId == postId)
-                .Take(new Range(start, end));
+                .Take(new Range(start, end))
+                .Select(x =>
+                {
+                    return new CommentInfo()
+                    {
+                        postId = x.postId,
+                        comment = x.comment,
+                        id = x.id,
+                        Img = x.mediaId.HasValue ? _unitOfWork.MediaRepository.Get(x.mediaId.Value).src:null
+                    };
+                });
             return Ok(result);
         }
 

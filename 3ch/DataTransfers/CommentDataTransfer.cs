@@ -6,10 +6,10 @@ namespace _3ch.DataTransfers
 {
     public class CommentDataTransfer
     {
-        public async static Task<Comment?> SendComment(int postId, string comment, int? mediaid = null)
+        public async static Task<Comment?> SendComment(int postId, string comment, int? mediaid = null, int? parentComment = null)
         {
             await using var appContext = new ApplicationContext();
-            var sendedComment = (await appContext.Comment.AddAsync(new Comment() { postId = postId, mediaId = mediaid, comment = comment })).Entity;
+            var sendedComment = (await appContext.Comment.AddAsync(new Comment() { postId = postId, mediaId = mediaid, comment = comment, commentDate = DateTime.UtcNow, parentComment = parentComment })).Entity;
             await appContext.SaveChangesAsync();
             return sendedComment;
         }

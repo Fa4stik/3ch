@@ -9,11 +9,11 @@ namespace _3ch.Hubs
 {
     public class CommentHub : Hub
     {
-        public async Task SendComment(int postId, string comment, int? mediaId = null)
+        public async Task SendComment(int postId, string comment, int? mediaId = null, int? parentComment = null)
         {
             comment = comment.Replace(@"\n", "\n");
             var db = new ApplicationContext();
-            var sendedComment = await CommentDataTransfer.SendComment(postId, comment, mediaId);
+            var sendedComment = await CommentDataTransfer.SendComment(postId, comment, mediaId, parentComment);
             if (sendedComment != null)
             {
                 var commentInfo = new CommentInfo()
@@ -21,7 +21,9 @@ namespace _3ch.Hubs
                     comment = sendedComment.comment,
                     id = sendedComment.id,
                     postId = sendedComment.postId,
-                    Img = (await db.Media.FirstOrDefaultAsync(x => x.id == sendedComment.mediaId)).src
+                    commentDate = sendedComment.commentDate,
+                    parentComment = sendedComment.parentComment,
+                    Img = mediaId.HasValue ? (await db.Media.FirstOrDefaultAsync(x => x.id == sendedComment.mediaId)).src:null
                 };
                 await Clients.Group(postId.ToString()).SendAsync("RecieveComment", commentInfo);
             }                
