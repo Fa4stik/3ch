@@ -31,9 +31,13 @@ namespace _3ch.Controllers
         [HttpGet("{shortName}")]
         public async Task<IActionResult> GetTag(string shortName)
         {
-            shortName = shortName.Replace("%2F","/");
+            shortName = shortName.Replace("%2F","/").ToLower();
             var context = new ApplicationContext();
             var tag = context.Tag.FirstOrDefault(x => x.shortName == shortName);
+            if (tag == null)
+            {
+                return this.NotFound();
+            }
             return Ok(tag);
         }
 

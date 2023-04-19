@@ -77,7 +77,7 @@ namespace _3ch.Controllers
                     tag = tagId,
                     mediaId = null,
                     date = DateTime.UtcNow,
-                };
+                };         
             _unitOfWork.PostRepository.Create(post);
             _unitOfWork.Save();
             return Ok(post);
