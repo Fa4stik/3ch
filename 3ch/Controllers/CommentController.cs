@@ -32,6 +32,7 @@ namespace _3ch.Controllers
                         postId = x.postId,
                         comment = x.comment,
                         id = x.id,
+                        commentDate = x.commentDate,
                         Img = x.mediaId.HasValue ? _unitOfWork.MediaRepository.Get(x.mediaId.Value).src:null
                     };
                 });
